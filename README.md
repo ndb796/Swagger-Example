@@ -89,3 +89,18 @@ paths:
 2) https://jsonplaceholder.typicode.com/todos/1
 1) https://www.google.com/complete/search?q=asd&client=psy-ab
 * Mocking은 API를 테스트하기 위해 가짜 값을 이용하는 것을 의미.
+### 웹 문서용 Swagger UI 사용해보기
+* Swagger UI 웹 문서 버전을 사용하면 독립적인 Swagger UI를 이용할 수 있음.
+* [Swagger UI](https://github.com/swagger-api/swagger-ui)에 접속.
+* [Download Zip] - 압축 풀기 - [dist] 폴더로 완성된 형태의 Swagger UI 이용 가능.
+* [dist] 폴더 빼고 나머지 폴더 삭제해도 됨.
+* 원하는 Swagger 프로젝트 [Export] - [Download API] - [YAML Resolved] - 압축 풀기 - openapi.yaml 파일을 [dist] 폴더에 붙여넣기.
+* 웹 문서용 Swagger UI를 위해서는 웹 서버에 YAML 파일이 올라가 있어야 함.
+* [dist] 폴더의 위치로 이동 및 웹 서버 구동 테스트.
+```
+npm install -g http-server
+http-server --cors
+```
+* http://localhost:8080/ 접속 이후에 Swagger UI 동작 확인. 
+* [dist] 폴더 내부의 index.html 수정 - url 경로를 "http://localhost:8080/openapi.yaml"로 수정.
+* http://localhost:8080/ 접속 이후에 Swagger UI 동작 재확인. 
