@@ -24,4 +24,68 @@
 * 구체적인 내용을 공부하고자 한다면 [Swagger Tutorial](https://app.swaggerhub.com/help)로 이동.
 ### 간단한 REST API 명세해보기
 * [Create New] - [Create New API] - [OpenAPI Version 3.0.0] - Template: [none] - Name: [Petstore] - Version: [1.0.0] - Title: [UserAPI] - Description: [The User API]
-* 
+* 구글 자동완성 API 테스트
+```
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'UserAPI'
+  description: 'UserAPI'
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ndb796/UserAPI/1.0.0
+  - description: Google API
+    url: https://www.google.com/
+  - description: JSON Placeholder API
+    url: https://jsonplaceholder.typicode.com/
+paths:
+  /todos/{userId}:
+    get:
+      summary: Returns a user by ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user to return
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  completed:
+                    type: boolean
+  /complete/search:
+    get:
+      summary: 자동완성 검색 결과를 반환합니다.
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: client
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A Text File
+          content:
+            text/plain:
+              schema:
+                type: string
+```
+* Swagger Hub가 제공하는 프록시 기능을 통해 결과 확인 가능
+2) https://jsonplaceholder.typicode.com/todos/1
+1) https://www.google.com/complete/search?q=asd&client=psy-ab
+* Mocking은 API를 테스트하기 위해 가짜 값을 이용하는 것을 의미.
