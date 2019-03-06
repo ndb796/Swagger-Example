@@ -167,4 +167,22 @@ security:
 * Express를 이용해 간단한 API 구현하기
 ```
 # 새로운 Express 프로젝트 만들어 보기
+cd C:\Study\Server API
+npm init
+# (Enter) 이후 프로젝트 생성 완료
+# 프로젝트 폴더에 app.js 파일 생성 및 작성하기
+var express = require('express');
+var app = express();
+
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
+# 작성된 서버 프로그램 구동하기
+npm install -g express
+node app.js
+# 사용자 이름에 유니코드 있을 때 오류 
 ```
