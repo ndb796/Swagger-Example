@@ -135,3 +135,31 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
 });
 ```
 * /docs 경로에 들어가 Swagger UI를 확인하기
+* Swagger UI에 API Key 설정하는 방법
+```
+# app.js 파일 수정하기
+# API Key 설정 내용을 추가합니다.
+var config = {
+  appRoot: __dirname, // required config
+  swaggerSecurityHandlers: {
+    api_key: function (req, authOrSecDef, scopesOrApiKey, cb) {
+      // 요청 헤더값이 api_key 이고 값이 'my_key'일 경우에만 실행을 허>용한다
+      if ('my_key' === scopesOrApiKey) {
+        cb();
+      } else {
+        cb(new Error('access denied!'));
+      }
+    }
+  }
+};
+# api/swagger/swagger.yaml 파일 수정하기
+# 'definitions'라고 쓰인 코드 위에 넣습니다.
+securityDefinitions:
+  api_key:
+    type: apiKey
+    in: query
+    name: api_key
+security:
+  - api_key: [  ]
+```
+* API Key를 입력하여 Swagger UI가 구동되는지 
