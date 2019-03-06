@@ -179,10 +179,20 @@ app.get('/', function (req, res) {
 });
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Server listening on port 3000!');
 });
 # 작성된 서버 프로그램 구동하기
-npm install -g express
+npm install --save express
 node app.js
-# 사용자 이름에 유니코드 있을 때 오류 
+# 사용자 이름에 유니코드 있을 때 오류 발생 가능
 ```
+* 더하기 API 작성해보기
+```
+app.get('/adder', function (req, res) {
+  let one = req.query.one;
+  let two = req.query.two;
+  let result = Number(one) + Number(two);
+  res.send(String(result));
+});
+```
+* http://localhost:3000/adder?one=1&two=2 테스트
