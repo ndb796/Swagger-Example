@@ -93,7 +93,8 @@ paths:
 * Swagger UI 웹 문서 버전을 사용하면 독립적인 Swagger UI를 이용할 수 있음.
 * [Swagger UI](https://github.com/swagger-api/swagger-ui)에 접속.
 * [Download Zip] - 압축 풀기 - [dist] 폴더로 완성된 형태의 Swagger UI 이용 가능.
-* [dist] 폴더 빼고 나머지 폴더 삭제해도 됨.
+* [dist] 폴더 빼고 나머지 폴더 삭제해도 됨.C:\Study
+
 * 원하는 Swagger 프로젝트 [Export] - [Download API] - [YAML Resolved] - 압축 풀기 - openapi.yaml 파일을 [dist] 폴더에 붙여넣기.
 * 웹 문서용 Swagger UI를 위해서는 웹 서버에 YAML 파일이 올라가 있어야 함.
 * [dist] 폴더의 위치로 이동 및 웹 서버 구동 테스트.
@@ -104,3 +105,33 @@ http-server --cors
 * http://localhost:8080/ 접속 이후에 Swagger UI 동작 확인. 
 * [dist] 폴더 내부의 index.html 수정 - url 경로를 "http://localhost:8080/openapi.yaml"로 수정.
 * http://localhost:8080/ 접속 이후에 Swagger UI 동작 재확인. 
+### 서버 종속형 Swagger UI 사용 및 API Key 설정해보기
+* Swagger UI를 서버에 종속적으로 사용할 수 있음.
+* 한 번 정의된 내용은 바꾸기 힘들지만, 익숙해지면 개발 속도가 매우 빠름.
+* Swagger라는 패키지를 이용하면 Swagger 프로젝트를 빠르게 만들어서 개발할 수 있음.
+* 필자는 별로 선호하지는 않음. 근데, 상당수 프로젝트가 이런 형식을 이용하고 있음. 특히 Spring.
+```
+# 윈도우 기준
+npm install -g swagger
+# 특정 폴더로 이동하기
+cd C:\Study
+swagger project create swagger
+# [Express] 프로젝트 설정하기
+cd swagger
+swagger project start
+# http://localhost:10010/hello?name=Scott 접속하여 기본적으로 만들어진 API 테스트
+```
+* app.js를 수정하여 Swagger UI 추가하기
+```
+# swagger-ui 라이브러리를 app에 추가합니다.
+var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
+
+SwaggerExpress.create(config, function(err, swaggerExpress) {
+  ...
+  swaggerExpress.runner.swagger.host = '127.0.0.1:10010';
+  app.use(SwaggerUi(swaggerExpress.runner.swagger));
+  swaggerExpress.register(app);
+  ...
+});
+```
+* /docs 경로에 들어가 Swagger UI를 확인하기
