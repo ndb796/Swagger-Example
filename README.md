@@ -162,4 +162,9 @@ securityDefinitions:
 security:
   - api_key: [  ]
 ```
-* API Key를 입력하여 Swagger UI가 구동되는지 
+* API Key를 입력하여 Swagger UI가 구동되는지 테스트
+### 간단한 API 기능 구현해보기
+* Express를 이용해 간단한 API 구현하기
+```
+# 새로운 Express 프로젝트 만들어 보기
+```
