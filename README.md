@@ -215,6 +215,7 @@ module.exports = {
 * module.exports에 함수명을 넣어야, 실제로 API 형태로서 서버가 동작함.
 * operationId는 실제로 존재하는, export 된 함수를 가리킬 수 있도록 해야 동작함.
 ### 간단한 API 기능 구현해보기
+* 독립형으로 Swagger를 돌려 보기
 * Express를 이용해 간단한 API 구현하기
 ```
 # 새로운 Express 프로젝트 만들어 보기
@@ -247,3 +248,16 @@ app.get('/adder', function (req, res) {
 });
 ```
 * http://localhost:3000/adder?one=1&two=2 테스트
+* 정적 파일 제공하는 방법 알아보기
+```
+# app.js 파일에 코드 추가하기
+app.use(express.static('swagger_ui'));
+# 루트 폴더에 swagger_ui 폴더 생성하기
+# swagger_ui 폴더 안에 test.html 파일 생성하기
+Hello World
+```
+* http://localhost:3000/test.html 테스트
+### 나의 API에 독립형 Swagger UI 달아보기
+* [Swagger UI](https://github.com/swagger-api/swagger-ui)에 접속.
+* [Download Zip] - 압축 풀기 - [dist] 폴더로 완성된 형태의 Swagger UI 이용 가능.
+* [dist] 폴더 빼고 나머지 폴더 삭제해도 됨.
