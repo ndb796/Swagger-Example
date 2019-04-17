@@ -251,9 +251,9 @@ app.get('/adder', function (req, res) {
 * 정적 파일 제공하는 방법 알아보기
 ```
 # app.js 파일에 코드 추가하기
-app.use(express.static('swagger_ui'));
-# 루트 폴더에 swagger_ui 폴더 생성하기
-# swagger_ui 폴더 안에 test.html 파일 생성하기
+app.use(express.static('public'));
+# 루트 폴더에 public 폴더 생성하기
+# public 폴더 안에 test.html 파일 생성하여 내용 넣기
 Hello World
 ```
 * http://localhost:3000/test.html 테스트
@@ -261,3 +261,44 @@ Hello World
 * [Swagger UI](https://github.com/swagger-api/swagger-ui)에 접속.
 * [Download Zip] - 압축 풀기 - [dist] 폴더로 완성된 형태의 Swagger UI 이용 가능.
 * [dist] 폴더 빼고 나머지 폴더 삭제해도 됨.
+* [dist] 폴더의 모든 내용을 잘라내기 해서 Node.js 프로젝트의 public 폴더에 붙여넣기.
+* public 폴더에 docs 폴더를 만들어서, public 폴더에 있는 내용을 다 docs 폴더로 이동시키기.
+* http://localhost:3000/docs 테스트.
+* Swagger Hub가 기본적으로 제공하는 서버에서의 기능을 예시 문서로 확인할 수 있음.
+* 이제 public 폴더에 swagger.yaml 파일 생성.
+```
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'My API'
+  description: 'My API'
+servers:
+  - description: My API
+    url: http://localhost:3000/
+paths:
+  /adder:
+    get:
+      summary: Adder API
+      parameters:
+        - name: one
+          in: query
+          description: First Value
+          required: true
+          schema:
+            type: integer
+        - name: two
+          in: query
+          description: Second Value
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Added Result
+          schema:
+            type: integer
+```
+* docs 폴더의 index.html 수정하기.
+* URL 내용을 http://localhost:3000/swagger.yaml 로 변경.
+* http://localhost:3000/docs 접속 및 테스트.
+* 정상적으로 동작하는 것을 확인.
