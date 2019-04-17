@@ -24,7 +24,7 @@
 * 이제 대충 어떻게 생겼는지 이해할 수 있음.
 * 구체적인 내용을 공부하고자 한다면 [Swagger Tutorial](https://app.swaggerhub.com/help)로 이동.
 ### 간단한 REST API 명세해보기
-* [Create New] - [Create New API] - [OpenAPI Version 3.0.0] - Template: [none] - Name: [Petstore] - Version: [1.0.0] - Title: [UserAPI] - Description: [The User API]
+* [Create New] - [Create New API] - [OpenAPI Version 3.0.0] - Template: [none] - Name: [Google_API_Test] - Version: [1.0.0] - Title: [Google_API_Test] - Description: [Google_API_Test]
 * 구글 자동완성 API 테스트
 ```
 openapi: 3.0.0
@@ -94,8 +94,7 @@ paths:
 * Swagger UI 웹 문서 버전을 사용하면 독립적인 Swagger UI를 이용할 수 있음.
 * [Swagger UI](https://github.com/swagger-api/swagger-ui)에 접속.
 * [Download Zip] - 압축 풀기 - [dist] 폴더로 완성된 형태의 Swagger UI 이용 가능.
-* [dist] 폴더 빼고 나머지 폴더 삭제해도 됨.C:\Study
-
+* [dist] 폴더 빼고 나머지 폴더 삭제해도 됨.
 * 원하는 Swagger 프로젝트 [Export] - [Download API] - [YAML Resolved] - 압축 풀기 - openapi.yaml 파일을 [dist] 폴더에 붙여넣기.
 * 웹 문서용 Swagger UI를 위해서는 웹 서버에 YAML 파일이 올라가 있어야 함.
 * [dist] 폴더의 위치로 이동 및 웹 서버 구동 테스트.
@@ -106,8 +105,9 @@ http-server --cors
 * http://localhost:8080/ 접속 이후에 Swagger UI 동작 확인. 
 * [dist] 폴더 내부의 index.html 수정 - url 경로를 "http://localhost:8080/openapi.yaml"로 수정.
 * http://localhost:8080/ 접속 이후에 Swagger UI 동작 재확인. 
-### 서버 종속형 Swagger UI 사용 및 API Key 설정해보기
-* Swagger UI를 서버에 종속적으로 사용할 수 있음.
+### 설치형 Swagger UI 사용 및 API Key 설정해보기
+* [블로그 자료](https://ndb796.tistory.com/253)
+* Swagger UI를 서버 프로그램과 함께 설치하여 사용할 수 있음. (종속적인 방법)
 * 한 번 정의된 내용은 바꾸기 힘들지만, 익숙해지면 개발 속도가 매우 빠름.
 * Swagger라는 패키지를 이용하면 Swagger 프로젝트를 빠르게 만들어서 개발할 수 있음.
 * 필자는 별로 선호하지는 않음. 근데, 상당수 프로젝트가 이런 형식을 이용하고 있음. 특히 Spring.
@@ -144,7 +144,7 @@ var config = {
   appRoot: __dirname, // required config
   swaggerSecurityHandlers: {
     api_key: function (req, authOrSecDef, scopesOrApiKey, cb) {
-      // 요청 헤더값이 api_key 이고 값이 'my_key'일 경우에만 실행을 허>용한다
+      // 요청 헤더값이 api_key 이고 값이 'my_key'일 경우에만 실행을 허용한다.
       if ('my_key' === scopesOrApiKey) {
         cb();
       } else {
@@ -164,6 +164,56 @@ security:
   - api_key: [  ]
 ```
 * API Key를 입력하여 Swagger UI가 구동되는지 테스트
+* API 내용을 변경하고 싶다면 어떻게 하면 될까?
+```
+# api/controllers/hello_world.js 파일에 API 추가하기
+function adder(req, res) {
+  let one = req.query.one;
+  let two = req.query.two;
+  let result = Number(one) + Number(two);
+  res.json(String(result));
+}
+# api/controllers/hello_world.js 파일의 module.exports
+module.exports = {
+  hello: hello,
+  adder: adder
+};
+# api/swagger/swagger.yaml 파일에 API 추가하기
+  /adder:
+    x-swagger-router-controller: hello_world
+    get:
+      description: Adder API
+      operationId: adder
+      parameters:
+        - name: one
+          in: query
+          description: First Value
+          required: true
+          type: integer
+        - name: two
+          in: query
+          description: Second Value
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/AdderResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+# api/swagger/swagger.yaml 파일의 definitions에 추가하기
+  AdderResponse:
+    required:
+      - result
+    properties:
+      result:
+        type: integer
+```
+* module.exports에 함수명을 넣어야, 실제로 API 형태로서 서버가 동작함.
+* operationId는 실제로 존재하는, export 된 함수를 가리킬 수 있도록 해야 동작함.
 ### 간단한 API 기능 구현해보기
 * Express를 이용해 간단한 API 구현하기
 ```
